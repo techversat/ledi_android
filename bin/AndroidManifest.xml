@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.techversat.ledimanager"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+	<uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+	<uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+	<uses-permission android:name="android.permission.READ_CALENDAR"></uses-permission>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+	<uses-permission android:name="com.google.android.providers.gmail.permission.READ_GMAIL"></uses-permission>
+	<!-- <uses-permission android:name="android.permission.ACCOUNT_MANAGER"></uses-permission> -->
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+	<uses-permission android:name="com.google.android.gm.permission.READ_GMAIL"></uses-permission>
+	<uses-permission android:name="com.google.android.providers.talk.permission.READ_ONLY"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<!--  <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" /> -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.READ_SMS" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_ledi"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="LEDIActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="Settings" android:launchMode="singleTask"></activity>
+        <activity android:name="DeviceSelection" android:launchMode="singleTask"></activity>
+        <activity android:name="com.techversat.lediview.VirtualLEDIActivity" android:label="VirtualLEDI" android:screenOrientation="landscape"></activity>
+        
+        <service android:label="@string/activitiy_title_main" android:name="com.techversat.ledimanager.LEDIService"></service>
+        
+        <receiver android:name=".IntentReceiver"> 
+            <intent-filter android:priority="200">
+            	<action android:name="android.provider.Telephony.SMS_RECEIVED" />  
+            	<action android:name="android.intent.action.BOOT_COMPLETED"/>
+            	<action android:name="com.android.music.metachanged" />
+            	
+            	<action android:name="com.android.alarmclock.ALARM_ALERT" />
+            	<action android:name="com.htc.android.worldclock.ALARM_ALERT" />
+            	<action android:name="com.android.deskclock.ALARM_ALERT" />
+            	<action android:name="com.sonyericsson.alarm.ALARM_ALERT" />
+            	
+            </intent-filter>
+            <intent-filter>
+	            <action android:name="android.intent.action.EVENT_REMINDER" />
+	            <data android:mimeType="vnd.android.cursor.item/calendar-alert" />
+	        </intent-filter>
+	        <intent-filter>
+            	<action android:name="com.fsck.k9.intent.action.EMAIL_RECEIVED" />
+                <data android:scheme="email" android:host="messages" />				            	
+            </intent-filter>
+            <intent-filter>
+				<action
+					android:name="android.intent.action.PROVIDER_CHANGED"
+					android:priority="-10"
+					/>
+				<data
+					android:scheme="content"
+					android:host="gmail-ls"
+					android:pathPattern="/unread/.*"
+					/>
+			</intent-filter>
+        </receiver>
+        <receiver android:enabled="true" android:name=".BootUpReceiver"
+        android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+        <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+		</receiver>
+        
+        <receiver android:name="com.techversat.ledimanager.AlarmReceiver"></receiver>
+        
+    </application>
+
+</manifest>
