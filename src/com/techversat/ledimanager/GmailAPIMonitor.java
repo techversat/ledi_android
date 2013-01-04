@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.techversat.ledimanager.LEDIService.Preferences;
-
 import com.google.android.gm.contentprovider.GmailContract;
 
 import android.content.Context;

@@ -67,7 +67,7 @@ public class LEDIActivity extends Activity {
             }
         });
 		
-		Log.i(TAG, "onCreate");
+		Log.i(TAG, "LEDIActivity onCreate");
 	}
 	
     @Override
