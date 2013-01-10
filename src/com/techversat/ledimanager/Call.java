@@ -24,7 +24,8 @@ public class Call {
 			bitmap = NotificationBuilder.smartLines(context, "phone.bmp", new String[] { number, name });
 		*/
 		// Notification.addOledNotification(context, Protocol.createOled1line(context, "phone.bmp", "Call from"), Protocol.createOled1line(context, null, name), null, 0, new VibratePattern(true, 500, 500, 3));
-		Notification.addTextNotification(context, name + ": " + number, Notification.notificationTimeout);
+		// Notification.addTextNotification(context, name + ": " + number, Notification.notificationTimeout);
+		Notification.addTextNotification(context, "call from "+name, Notification.notificationTimeout);
 		
 		// Thread ringer = new Thread(new CallVibrate());
 		// ringer.start();		
