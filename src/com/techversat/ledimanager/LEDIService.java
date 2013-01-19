@@ -514,7 +514,8 @@ public class LEDIService extends Service {
 		case ConnectionState.CONNECTED:
 			// if (Preferences.logging) Log.d(LEDIActivity.TAG, "state: connected");
 			// read from input stream
-			// readFromDevice();
+			readFromDevice();
+			// result = 10000; // 10 seconds
 			break;
 		case ConnectionState.DISCONNECTING:
 			// if (Preferences.logging) Log.d(LEDIActivity.TAG, "state: disconnecting");
@@ -567,63 +568,26 @@ public class LEDIService extends Service {
 	}
 	
 	void readFromDevice() {
-		
 		try {
-			byte[] bytes = new byte[256];
+			byte[] bytes = new byte[16]; // small number of bytes
 			Log.d(LEDIActivity.TAG, "before blocking read");
 			inputStream.read(bytes);
 			wakeLock.acquire(5000);
 			
-			// print received
+			// let's see what we receive
 			String str = "received: ";
-			int len = (bytes[1] & 0xFF);
-			Log.d(LEDIActivity.TAG, "packet length: " + len);
-			
-			for (int i = 0; i < len; i ++) {
-				//str+= Byte.toString(bytes[i]) + ", ";
-				str+= "0x" + Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1) + ", ";
+			for (int i = 0; i < 4; i ++) {
+				str += (char) bytes[i] + " ";
+				// str+= Byte.toString(bytes[i]) + ", ";
+				// str+= "0x" + Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1) + ", ";
 			}
 			Log.d(LEDIActivity.TAG, str);
-			
-			switch (bytes[2]) {
-				case 0x02:
-					Log.d(LEDIActivity.TAG, "received: device type response");
-					break;
-				case 0x31:
-					Log.d(LEDIActivity.TAG, "received: nval response");
-					break;
-				case 0x33:
-					Log.d(LEDIActivity.TAG, "received: status change event");
-					break;
-			}
 			/*
-			if (bytes[2] == 0x31) { // nval response
-				if (bytes[3] == 0x00) // success
-					if (bytes[4] == 0x00) // set to 12 hour format
-					Protocol.setNvalTime(true);
-			}
-			*/
-			
-			if (bytes[2] == 0x33) { // status change event
-				if (bytes[4] == 0x11) {
-					Log.d(LEDIActivity.TAG, "notify scroll request");
-					
-					// synchronized (Notification.scrollRequest) {
-					// 	Notification.scrollRequest.notify();
-					// }
-				}
-				
-				if (bytes[4] == 0x10) {
-					Log.d(LEDIActivity.TAG, "scroll completed");										
-				}
-			}
-			
 			if (bytes[2] == 0x34) { // button press
 				Log.d(LEDIActivity.TAG, "button event");
 				pressedButton(bytes[3]);
 			}
-			
-			
+			*/	
 		} catch (IOException e) {
 			wakeLock.acquire(5000);
 			if (connectionState != ConnectionState.DISCONNECTING)
